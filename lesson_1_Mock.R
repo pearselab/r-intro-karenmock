@@ -2,13 +2,21 @@
 ## Exercises ###################################
 ################################################
 
-# text added for the first commit
-# c - concatenate
+# trying again
+# c   - concatenate
 #     - takes two (or more) vector and joins them together
 c(1, 2, 3)
 c(c(1,2,3), c(4,5,6))
 #     - they need to be of the same type, though!
 c(1,2, "three")
+
+# cat - concatenate and print
+#     - Print output to the screen or to a file. Use cat to print information 
+#       to an end-user from a function. cat is also useful for writing 
+#       information that is being processed or generated, one or more lines at 
+#       a time, to a file.
+x <- c(1,4,8)
+cat("The mean of x is ",mean(x), "\n")
 
 
 
