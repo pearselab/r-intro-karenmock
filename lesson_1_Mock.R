@@ -18,7 +18,40 @@ c(1,2, "three")
 x <- c(1,4,8)
 cat("The mean of x is ",mean(x), "\n")
 
-
+# cbind
+# col,row
+# cut
+# diff
+# dim
+# rownames, colnames, names
+# expand.grid
+# eigen, %*%, lower.tri, upper.tri, diag (try ?"%*%", 
+#   not ?%*%, as this is an operator, and document the function, not the maths
+# gl
+# identical
+# image
+# library
+# length
+# jitter
+# ls; what does rm(list=ls()) do?
+# mean, median, max, min
+# paste
+# read.csv, read.table, write.csv, write.table
+# rnorm, pnorm, dnorm, qnorm
+# runif, rpois
+# rank
+# sort, ran
+# outer
+# rep
+# rowSum, colSum
+# seq
+# source
+# which, which.min, which.max
+# setdiff, intersect, union
+# table
+# with; make sure you read the examples as this is a simple function 
+#   whose technical explanation can be complex. The data argument to 
+#   many plotting functions allows you to do something similar
 
 ################################################
 ## Bonus exercises #############################
