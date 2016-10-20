@@ -10,23 +10,59 @@ c(c(1,2,3), c(4,5,6))
 #     - they need to be of the same type, though!
 c(1,2, "three")
 
-# cat - concatenate and print
-#     - Print output to the screen or to a file. Use cat to print information 
-#       to an end-user from a function. cat is also useful for writing 
-#       information that is being processed or generated, one or more lines at 
-#       a time, to a file.
+# cat - concatenate to a print statement
 x <- c(1,4,8)
 cat("The mean of x is ",mean(x), "\n")
 
-# cbind
-# col,row
-# cut
-# diff
-# dim
-# rownames, colnames, names
-# expand.grid
+# cbind - binds columns; combines objects by columns
+M <- matrix (c(1:3,4:6,7:9), nrow =3, ncol = 3)
+N <- c("One", "Two", "Three")
+NM <- cbind (N,M) 
+NM
+
+# col,row - with [], specifies an index of a vector or matrix
+M <- matrix (c(1:3,4:6,7:9), nrow =3, ncol = 3)
+M1 <- M[3,2]
+M1
+
+# cut - divides the range of x into intervals and codes the values in x by interval.
+x <- (1:20)
+y <- cut(x,4)
+y
+
+# diff - a vector of 'lagged differences', or number of integers between numbers
+x <- c(2,4,8,22,48)
+diff(x)  #returns (2,4,14,26)
+
+# dim - to retrieve or set the dimension of an object
+x <- 1:12
+dim(x) <- c(3,4)
+x
+
+# rownames, colnames, names - to get or set the names of an object
+letters
+names(letters) <- c(1:26)
+letters
+
+# expand.grid - systematically generates a dataframe by filing in 
+#   with all the possible combination of the provided vectors.
+require(utils)
+y <- expand.grid(height = seq(60, 80, 5), weight = seq(100, 300, 50),
+            sex = c("Male","Female"))
+y
+
 # eigen, %*%, lower.tri, upper.tri, diag (try ?"%*%", 
 #   not ?%*%, as this is an operator, and document the function, not the maths
+#   The eigen command computes the eigenvalues and eigenvectors of matrices. 
+#   The 
+cbind(c(1,-1), c(-1,1))
+eigen(cbind(c(1,-1), c(-1,1))) #returns parallel matrix of eigenvalues
+upper.tri(cbind(c(1,-1), c(-1,1)))  #returns a parallel matrix of logicals wrt matrix position
+diag(cbind(c(1,-1), c(-1,1))) # returns the diagonal of a matrix
+# the %*% operator multiplies a matrix by its transpose.
+# the %x% is the form of a binary operator
+# %%, %in%, %*% are binary operators (respectively modulo, match, and matrix multiply)
+  
 # gl
 # identical
 # image
