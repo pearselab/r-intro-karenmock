@@ -72,7 +72,25 @@ identical(changed,unchanged) # returns FALSE
 changed # returns upper case letters
 unchanged # returns lower case letters
 
+# ADVANCED LOOPING
+# to break out of a loop at a certain point:
+value <- 0
+max.iter <- 10
+goal <- 2
+for (i in 1:max.iter) {
+  value <- rnorm(1) # random generation from norm dist with mean0 sd1
+  if(value > goal) {
+    break  # 'break' is a 'keyword' ***not sure what that means
+  }
+}
+if(i == max.iter) {  # if the program does not 'break' it will proceed to the max.iter limit
+  stop ("Max iteration reached!")
+}
+i  # this will return different values depending on iteration
+# if change the max.iter to 10, will get Error: Max iteration reached!
+# this feels a bit like a while loop but it will not get into infinite looping 
+#   because of the break built in
 
-
-
+# could make this much simpler and prevent having an error message: ***was that meant 
+#   to be a challenge with the tools introduced so far?
 
