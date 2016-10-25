@@ -252,10 +252,10 @@ with(test, dim(test))  # returns the dimensions of 'test'.
 ## Bonus exercises #############################
 ################################################
 
-# find the following items in the text below (bonus question: it’s the opening of what book?). 
+# find the following items in the text below (bonus question: it's the opening of what book?). 
 # A tale of two cities
-# Once you’ve done that, use strsplit to cut the entire string into sections on each new line 
-# (what’s the regex code for that?) and then repeat the exercise using grepl (which won’t take long).
+# Once you've done that, use strsplit to cut the entire string into sections on each new line 
+# (what's the regex code for that?) and then repeat the exercise using grepl (which won't take long).
 
 bonus.text <- "It was the best of times, it was the worst of times, it was the age of
 wisdom, it was the age of foolishness, it was the epoch of belief, it
@@ -267,28 +267,35 @@ way- in short, the period was so far like the present period, that
 some of its noiosiest authorities insisted on its being received, for
 good or for evil, in the superlative degree of comparison only."
 
-#   All instances of “the”
+#   All instances of 'the'
+length(bonus.text) # returns [1] because it is a single element, still needs to be split up
+# so try a different approach
 bonus.text.words <- strsplit(bonus.text," ")[[1]]  # split the first element of the vector
-bonus.text.words # the lines are now split out into individual words but still a single vector
+bonus.text.words # the text is now split out into individual words 
 length(bonus.text.words) # returns 112, so now individual words are split out
-the_instances <- grep("the", bonus.text.words) # doesn't work because it is a single element, still needs to be split up
+the_instances <- grep("the", bonus.text.words) 
 length(the_instances)  # returns 15
+length(the_instances)  # returns the 15 positions
+bonus.text.words[3] # returns 'the'
 
 #   What lines end with vowels
 #     first split text into lines
 bonus.text.lines <- strsplit(bonus.text, "\n")[[1]]
-length (bonus.text.lines)  # returns 
+length (bonus.text.lines)  # returns 9
 #     now use regular expressions to answer the question about lines
-grep()
+vowels <- c("a","e","i","o", "u")
+bonus.text.lines[] #returns all lines
+bonus.text.lines[1] #returns first line
+bonus.text.lines[[1]] #still returns first line
+# so the words need to be delineated as elements within lines?
 
-
-
-#   What lines begin with “was” 
-#   Where “it” is written twice in a row
+#   What lines begin with 'was' 
+#   Where 'it' is written twice in a row
 #   Where three vowels are written in a row inside a single word
-#   All the words that come after the word “the”
+#   All the words that come after the word 'the'
 
 x <- c("16_24cat", "25_34cat", "35_44catch", "45_54Cat", "55_104fat")
 grep(pattern = "cat", x = x)
+#   ** need to learn more about grep in r before finishing this exercise.
 
 
