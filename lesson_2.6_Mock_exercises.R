@@ -160,9 +160,10 @@ txtbox <- function(w,h,t) {
     }
   cat(top) # print top line
   }
-txtbox (8,3,"grr")
-**there are some problems with height that I am not going to bother to fix
-            
+txtbox (8,6,"grr")
+# there are some problems with height that I am not going to bother to fix
+
+           
   
     
   }
