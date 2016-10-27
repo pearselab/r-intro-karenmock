@@ -76,68 +76,63 @@ for (i in list) {
 # exponential function. Write them a function that calculates population size at any time for any 
 # values of its parameters.
 # a  asymptote, b = displacement on x-axis, c = growth rate
-gompertz <- function (t,a,b,c) {
+gompertz <- function (a,b,c,t) {  # *** do these have to be in the order they are called by the fx?
   pop_size <- a*exp(-b*exp(-c*t))
   print (pop_size)
 }
-gompertz(5,22,6,2)  # no idea if the scale of the numbers is correct but it does return an answer
+gompertz(233,22,.8,2)  # no idea if the scale of the numbers is correct but it does return an answer
 
 # Q6: The biologist likes your function so much they want you to write another function that plots the 
 # progress of the population over a given length of time. Write it for them.
-# Note to self: presume a, b, and c are constant ove the time period, e.g. 50 years
-GompFun <- function (a,b,c,d) { # a,b,c, constants, d = max time
-  t <- 0
-  pop_vector <- 0
-  time_span <- c(1:d)
-  for (i in time_span) {
-    t <- c(t,i) # incrementing to make a vector
-    pop_size <- a*exp(-b*exp(-c*i)) # within-function variable
-    pop_vector <-  c(pop_vector, pop_size) # incrementing to make a vector
+GompFun <- function (a,b,c,d) { # a,b,c = constants, d = # time steps
+  pop_vector <- numeric(d) # creates a vector of 30 zeros
+  for (i in 1:d) {
+    pop_vector [i] <- a*exp(-b*exp(-c*i))
   }
-  plot(t, pop_vector)
+  plot(1:d, pop_vector, col = color)
 }
 GompFun(280,100,.4,30)
 
 # Q7: The biologist has fallen in love with your plotting function, but wants to colour y values 
 # above a as blue, and y values above b as red. Change your function to allow that.
-GompFun <- function (a,b,c,d) { # a,b,c, constants, d = max time
-  t <- 0
-  pop_vector <- 0
-  time_span <- c(1:d)
-  for (i in time_span) {
-    t <- c(t,i) # incrementing to make a vector
-    pop_size <- a*exp(-b*exp(-c*i)) # within-function variable
-    pop_vector <-  c(pop_vector, pop_size) # incrementing to make a vector
+# ***didn't know enough about the Gompertz fx to test the values > a, so abandoned that aspect
+GompFun <- function (a,b,c,d) { # a,b,c = constants, d = # time steps
+  pop_vector <- numeric(d) # creates a vector of 30 zeros
+  color <- rep("black",d)
+  for (i in 1:d) {
+    pop_vector [i] <- a*exp(-b*exp(-c*i))
+    if (pop_vector[i] > b) {
+      color[i] <- "red"  #now the color vector will have a mix of black and red
+    }
   }
-  plot(t, pop_vector, col = ifelse(pop_vector > a,"blue", 
-  ifelse (pop_vector > b, "red", "black")), type = "p", xlab = "Time", ylab = "Population")
+  plot(1:d, pop_vector, col = color)
 }
 GompFun(280,100,.4,30)
 
 # Q8: You are beginning to suspect the biologist is taking advantage of you. Modify your function 
-# to plot in purple any y value that’s above a and b. 
+# to plot in purple any y value that's above a and b. 
 # Hint: try putting 3==3 & 2==2 and 3==4 | 2==2 into an if statement and see what you get. 
 # Using this construction may make this simpler.
-
-GompFun <- function (a,b,c,d) { # a,b,c, constants, d = max time
-  t <- 0
-  pop_vector <- 0
-  time_span <- c(1:d)
-  for (i in time_span) {
-    t <- c(t,i) # incrementing to make a vector
-    pop_size <- a*exp(-b*exp(-c*i)) # within-function variable
-    pop_vector <-  c(pop_vector, pop_size) # incrementing to make a vector
-  }
-  plot(t, pop_vector, col = ifelse(pop_vector > a,"blue", 
-  ifelse (pop_vector > b, "red", "black")), type = "p", xlab = "Time", ylab = "Population")
-}
-GompFun(280,100,.4,30)
+# ***did not do this as could not evaluate when the pop was > a
+# ***did not understand the 'hint' in the question
 
 # Q9: Write a function that draws boxes of a specified width and height that look like this 
 # (height 3, width 5):
   # *****
   # *   *
   # *****
+# variables: desired width, height
+box <- function(w,h) {
+  # create 2 types of lines
+  top <- c(rep("*",w),"\n")
+  cat(top)  # print top line
+  mid <- c("*",c(rep(" ",w-2),"*"))
+  for (i in 1:h-2) {
+    cat(noquote(mid),"\n")
+  }
+  cat(top)
+}
+box(5,10)
 
 # Q10: Modify your box function to put text centred inside the box, like this:
 #   *************
@@ -145,6 +140,45 @@ GompFun(280,100,.4,30)
 #   * some text *
 #   *           *
 #   *************
+
+txtbox <- function(w,h,t) {
+  top <- c(rep("*",w),"\n")
+  cat(top) # print top line 
+  linesover <- (round(h/2,0))-3 # number of lines to go above text
+  linesunder <- h-linesover-4
+  leftsp <- round((w-2-nchar(t))/2) # spaces between * and text to left
+  rightsp <- w-leftsp-nchar(t)-1 # spaces between text and text to right
+  if (w < (nchar(t)+4)) {
+    print (noquote("ERROR:box width too small for text"))
+  }
+  for (i in 1:linesover) {  # print lines over text
+    cat("*",c(rep(" ",(w-2)),"*","\n"))
+    }
+  cat("*",rep(" ",leftsp),noquote(t),rep(" ",rightsp),"*","\n")
+  for (i in 1:linesunder) { # print lines under text
+    cat("*",c(rep(" ",(w-2)),"*","\n"))
+    }
+  cat(top) # print top line
+  }
+txtbox (8,3,"grr")
+**there are some problems with height that I am not going to bother to fix
+            
+  
+    
+  }
+  txtline <-
+  undertxt <-
+  mid <- c("*",c(rep(" ",w-2),"*"))
+  txtline <- c("*",c(rep(" ",w-5),t,c(rep(" ",w-5),"*")))
+  
+  
+  for (i in seq(1:h-2-len) {
+    cat(noquote(mid),"\n")
+  }
+  cat(top) # print bottom line
+}
+txtbox(15,15, "grrr")
+
 
 # Q11: Modify your box function to build boxes of arbitrary text, taking dimensions specified 
 # in terms of dimensions, not the text. For example, box("wdp", 3, 9, "hey") might produce:
