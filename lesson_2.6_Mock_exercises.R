@@ -163,29 +163,12 @@ txtbox <- function(w,h,t) {
 txtbox (8,6,"grr")
 # there are some problems with height that I am not going to bother to fix
 
-           
-  
-    
-  }
-  txtline <-
-  undertxt <-
-  mid <- c("*",c(rep(" ",w-2),"*"))
-  txtline <- c("*",c(rep(" ",w-5),t,c(rep(" ",w-5),"*")))
-  
-  
-  for (i in seq(1:h-2-len) {
-    cat(noquote(mid),"\n")
-  }
-  cat(top) # print bottom line
-}
-txtbox(15,15, "grrr")
-
-
 # Q11: Modify your box function to build boxes of arbitrary text, taking dimensions specified 
 # in terms of dimensions, not the text. For example, box("wdp", 3, 9, "hey") might produce:
 #   wdpwdpwdp
 #   w  hey  w
 #   wdpwdpwdp
+# skipped this one, I'm done with boxes 
 
 # In ecology, hurdle models are often used to model the abundance of species found on surveys. They
 # first model the probability that a species will be present at a site (drawn, for example, from a 
@@ -195,5 +178,104 @@ txtbox(15,15, "grrr")
 # a given λ. Hint: there is no Bernoulli distribution in R, but the Bernoulli is a special case of 
 # what distribution?...
 
+# Bernoulli is a special case of the binomial distribution. Random variable which takes the value 1 
+# with success probability of p and the value 0 with failure probability of q=1-p
+
+# my original answer
+# the prob that a species will NOT be present at a set of n sites (trials)
+# is given by pbinom (x, size, prob) where x is 0. The inverse is the prob that x is not 0.
+# inputs:
+# s = number of sites (i.e. trials)
+# b = baseline prob of presence (= inverse of prob absence, or 0 observations)
+# l = lambda, the rate of encounter
+
+# s = number of sites
+# b = baseline prob of presence
+# l = lambda, the rate of encounter
+
+s <- 
+b <- 
+l <-
+sp_ab <- function (s,b,l) {
+  p <- dbinom(0,s,b))  # this is the prob that the species is absent
+  return (qpois(p,l))  # this is the number of observations expected
+}
+sp_ab(100,.1,.05)
+
+# my answer after lots of help
+# just discovered (through Paul) that a 'hurdle model' is a 2-step simulation.
+# Here, the first hurdle is presence/absence on the site and the second abundance.  
+# Since it is a sumulation, each observation is one site
+# first get a random draw from binomial for one site, one query (?)***, like a single coin flip
+# parameters n = 1 site, size = 1 query, prob = p
+
+sp_ab <- function (num_sites, prob_pres) {
+    for (i in 1:num_sites) {
+      rbinom(1,1,p)
+    }
+ 
 
 
+# Q13) An ecologist really likes your hurdle function (will you never learn?). 
+# Write them a function that simulates lots of species (each with their own p and λ) 
+# across n sites. Return the results in a matrix where each species is a column, and 
+# each site a row (this is the standard used for ecology data in R).
+
+# Q14) Professor Savitzky approaches you with a delicate problem. A member of faculty 
+# became disoriented during fieldwork, and is now believed to be randomly wandering somewhere 
+# in the desert surrounding Logan. He is modelling their progress through time in five minute 
+# intervals, assuming they cover a random, Normally-distributed distance in latitude and longitude 
+# in each interval. Could you simulate this process 100 times and plot it for him?
+
+  wandering <- function (n) { # n = number of 5-min iterations to test
+    dist_lat <- 0  
+    dist_long <- 0
+    lat_vector <- c() #to set as vector
+    long_vector <- c()
+    t <-0 # to initiate
+    while (t < n) {
+      dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
+      dist_long <- (dist_long + rnorm(1,0))
+      lat_vector <- c(lat_vector, dist_lat) # need 2 difft vars for lat since dist_lat is the new position and lat_vector is the vector
+      long_vector <- c(long_vector, dist_long)
+      t <- t+1
+    }
+    plot (lat_vector, long_vector, type = "l")
+  }
+  wandering(100)
+  
+# Q15) Professor Savitzky is deeply concerned to realise that the member of faculty was, in fact, 
+# at the top of a steep mountain in the fog. Approximately 5 miles away, in all directions, from 
+# the faculty member’s starting point is a deadly cliff! He asks if you could run your simulation 
+# to see how long, on average, until the faculty member plummets to their doom.
+# 1mi = 1.61k
+
+wandering <- function (n) { # n = number of 5-min iterations to test
+  dist_lat <- 0  
+  dist_long <- 0
+  lat_vector <- c() #to set as vector
+  long_vector <- c()
+  t <-0 # to initiate
+  dist_from_origin <-0
+  while (t < n) {
+    dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
+    dist_long <- (dist_long + rnorm(1,0))
+    lat_vector <- c(lat_vector, dist_lat) # need 2 difft vars for lat since dist_lat is the new position and lat_vector is the vector
+    long_vector <- c(long_vector, dist_long)
+    t <- t+1
+    if (dist_lat > 1.6 | dist_long >1.6) {
+      cat("Off the cliff in", t*5, "minutes")
+      break
+    } 
+  }
+  plot (lat_vector, long_vector, type = "l")
+}
+wandering(100)
+
+# Q16) Sadly, by the time you have completed your simulations the faculty member has perished. 
+# Professor Savitzky is keen to ensure this will never happen again, and so has suggested each 
+# faculty member be attached, via rubber band, to a pole at the centre of the site whenever 
+# conducting fieldwork 3. He assures you that you can model this by assuming that the faculty 
+# member, at each time-step, moves α× distance-from-pole latitudinally and longitudinally (in 
+# addition to the rate of movement you’ve already simulated) each time-step. Simulate this, 
+# and see how strong the rubber band (α) must be to keep the faculty member safe for at least a day.
