@@ -235,7 +235,6 @@ sp_ab(5,.5,5) # 5 sites, .5 prob of presence, lambda of 5 (rate parameter)
 # to see how long, on average, until the faculty member plummets to their doom.
 # 1mi = 1.61k
 
-# for a single simulation
 wandering <- function (n) { # n = number of 5-min iterations to test
   dist_lat <- 0  
   dist_long <- 0
@@ -249,64 +248,24 @@ wandering <- function (n) { # n = number of 5-min iterations to test
     long_vector <- c(long_vector, dist_long)
     t <- t+1
     if (dist_lat > 1.6 | dist_long >1.6) {
-      cat ("Time to cliff is", t*5, "minutes")
-      time <- (t*5)   # ** not sure how go get this variable outside the function
+      #cat ("Time to cliff is", t*5, "minutes")
+      time <- (t*5)
+      return(time)
       break
     } 
   }
 }
-wandering(100)
-
-# attempt for  multiple simulations...rewriting function...I think this is the wrong approach
-avg_cliff_time <- function (max_iters, n_sims) {
-  for (i in 1:n_sims) {
-    cliff_time_vect <- c()
-    dist_lat <- 0  
-    dist_long <- 0
-    lat_vector <- c() #to set as vector
-    long_vector <- c()
-    t <-0 # to initiate
-    while (t < max_iters) {
-      dist_lat <- (dist_lat + rnorm(1,0))
-      dist_long <- (dist_long + rnorm(1,0))
-      lat_vector <- c(lat_vector, dist_lat) # need 2 difft vars for lat since dist_lat is the new position and lat_vector is the vector
-      long_vector <- c(long_vector, dist_long)
-      t <- t+1
-      if (dist_lat > 1.6 | dist_long >1.6) {
-        cliff_time_vect <- c(cliff_time_vect, t*5)
-        break
-      } else {
-        next  # return to while statement?
-      } 
-    } 
-    Average_Time <- ave(cliff_time_vect)
-    print ("Average Cliff Time is", Average_Time)
-  } 
-}
-avg_cliff_time (100,20) # **getting error statement that I don't understand
-
-# another attempt - stuck on trying to figure out how to increment a vector outside the
-# function, with 'time', which is inside the function.
-wandering <- function (n) { # n = number of 5-min iterations to test
-  dist_lat <- 0  
-  dist_long <- 0
-  lat_vector <- c() #to set as vector
-  long_vector <- c()
-  t <-0 # to initiate
-  while (t < n) {
-    dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
-    dist_long <- (dist_long + rnorm(1,0))
-    lat_vector <- c(lat_vector, dist_lat) # need 2 difft vars for lat since dist_lat is the new position and lat_vector is the vector
-    long_vector <- c(long_vector, dist_long)
-    t <- t+1
-    if (dist_lat > 1.6 | dist_long >1.6) {
-      cat ("Time to cliff is", t*5, "minutes")
-      time <- (t*5)   # ** not sure how go get this variable outside the function
-      break
-    } 
+avg_cliff_time <- function (n,nsims){ # function to take the avg of nsims reps
+  vect <- numeric(nsims) #pre-allocation
+  for (i in 1:nsims) {
+    vect[i] <- wandering(n)
   }
+  return(vect)
 }
-wandering(100)
+avg_cliff_time(100,20)
+# sporadically returns "Error in vect[i] <- wandering(n) : replacement has length zero"
+
+
 
 # Q16) Sadly, by the time you have completed your simulations the faculty member has perished. 
 # Professor Savitzky is keen to ensure this will never happen again, and so has suggested each 
