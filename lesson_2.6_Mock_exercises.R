@@ -170,7 +170,7 @@ txtbox (8,6,"grr")
 #   wdpwdpwdp
 # skipped this one, I'm done with boxes 
 
-# In ecology, hurdle models are often used to model the abundance of species found on surveys. They
+# Q12: In ecology, hurdle models are often used to model the abundance of species found on surveys. They
 # first model the probability that a species will be present at a site (drawn, for example, from a 
 # Bernoulli distribution) and then model the abundance for any species that is present (drawn, for 
 # example, from the Poisson distribution). Write a function that simulates the abundance of a species 
@@ -181,45 +181,30 @@ txtbox (8,6,"grr")
 # Bernoulli is a special case of the binomial distribution. Random variable which takes the value 1 
 # with success probability of p and the value 0 with failure probability of q=1-p
 
-# my original answer
-# the prob that a species will NOT be present at a set of n sites (trials)
-# is given by pbinom (x, size, prob) where x is 0. The inverse is the prob that x is not 0.
-# inputs:
-# s = number of sites (i.e. trials)
-# b = baseline prob of presence (= inverse of prob absence, or 0 observations)
-# l = lambda, the rate of encounter
-
-# s = number of sites
-# b = baseline prob of presence
-# l = lambda, the rate of encounter
-
-s <- 
-b <- 
-l <-
-sp_ab <- function (s,b,l) {
-  p <- dbinom(0,s,b))  # this is the prob that the species is absent
-  return (qpois(p,l))  # this is the number of observations expected
-}
-sp_ab(100,.1,.05)
-
-# my answer after lots of help
+# This is my answer after lots of help
 # just discovered (through Paul) that a 'hurdle model' is a 2-step simulation.
 # Here, the first hurdle is presence/absence on the site and the second abundance.  
-# Since it is a sumulation, each observation is one site
-# first get a random draw from binomial for one site, one query (?)***, like a single coin flip
-# parameters n = 1 site, size = 1 query, prob = p
+# first get a random draw from binomial for one site, one query, like a single coin flip
+# input parameters for pres/abs part: prob_presence
+# input parameters for abundance part: num_sites, lambda
+# output: simulated count per site
 
-sp_ab <- function (num_sites, prob_pres) {
-    for (i in 1:num_sites) {
-      rbinom(1,1,p)
-    }
- 
-
+sp_ab <- function (num_sites, prob_pres, lambda) {  # only got after seeing Carol's code
+  if (rbinom(1,1,prob_pres) == 1) {  # determines if species is present (1) or absent (!1) at a site
+    abundance <- rpois (num_sites, lambda)
+    return (abundance)
+  } else {
+    print ("Species Not Present")
+  }
+}
+sp_ab(5,.5,5) # 5 sites, .5 prob of presence, lambda of 5 (rate parameter)
 
 # Q13) An ecologist really likes your hurdle function (will you never learn?). 
 # Write them a function that simulates lots of species (each with their own p and λ) 
 # across n sites. Return the results in a matrix where each species is a column, and 
 # each site a row (this is the standard used for ecology data in R).
+
+
 
 # Q14) Professor Savitzky approaches you with a delicate problem. A member of faculty 
 # became disoriented during fieldwork, and is now believed to be randomly wandering somewhere 
@@ -272,7 +257,7 @@ wandering <- function (n) { # n = number of 5-min iterations to test
 }
 wandering(100)
 
-# attempt for  multiple simulations
+# attempt for  multiple simulations...rewriting function...I think this is the wrong approach
 avg_cliff_time <- function (max_iters, n_sims) {
   for (i in 1:n_sims) {
     cliff_time_vect <- c()
@@ -300,7 +285,7 @@ avg_cliff_time <- function (max_iters, n_sims) {
 }
 avg_cliff_time (100,20) # **getting error statement that I don't understand
 
-# another attempt, trying to figure out how to increment a vector outside the
+# another attempt - stuck on trying to figure out how to increment a vector outside the
 # function, with 'time', which is inside the function.
 wandering <- function (n) { # n = number of 5-min iterations to test
   dist_lat <- 0  
@@ -330,3 +315,7 @@ wandering(100)
 # member, at each time-step, moves α× distance-from-pole latitudinally and longitudinally (in 
 # addition to the rate of movement you’ve already simulated) each time-step. Simulate this, 
 # and see how strong the rubber band (α) must be to keep the faculty member safe for at least a day.
+
+# I'm pretty sure this faculty member will perish if she spends any more time on this right now.
+# Possibly return to this if the issues on Q15 can be addressed.
+
