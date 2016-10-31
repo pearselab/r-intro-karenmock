@@ -250,13 +250,13 @@ sp_ab <- function (num_sites, prob_pres) {
 # to see how long, on average, until the faculty member plummets to their doom.
 # 1mi = 1.61k
 
+# for a single simulation
 wandering <- function (n) { # n = number of 5-min iterations to test
   dist_lat <- 0  
   dist_long <- 0
   lat_vector <- c() #to set as vector
   long_vector <- c()
   t <-0 # to initiate
-  dist_from_origin <-0
   while (t < n) {
     dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
     dist_long <- (dist_long + rnorm(1,0))
@@ -264,11 +264,62 @@ wandering <- function (n) { # n = number of 5-min iterations to test
     long_vector <- c(long_vector, dist_long)
     t <- t+1
     if (dist_lat > 1.6 | dist_long >1.6) {
-      cat("Off the cliff in", t*5, "minutes")
+      cat ("Time to cliff is", t*5, "minutes")
+      time <- (t*5)   # ** not sure how go get this variable outside the function
       break
     } 
   }
-  plot (lat_vector, long_vector, type = "l")
+}
+wandering(100)
+
+# attempt for  multiple simulations
+avg_cliff_time <- function (max_iters, n_sims) {
+  for (i in 1:n_sims) {
+    cliff_time_vect <- c()
+    dist_lat <- 0  
+    dist_long <- 0
+    lat_vector <- c() #to set as vector
+    long_vector <- c()
+    t <-0 # to initiate
+    while (t < max_iters) {
+      dist_lat <- (dist_lat + rnorm(1,0))
+      dist_long <- (dist_long + rnorm(1,0))
+      lat_vector <- c(lat_vector, dist_lat) # need 2 difft vars for lat since dist_lat is the new position and lat_vector is the vector
+      long_vector <- c(long_vector, dist_long)
+      t <- t+1
+      if (dist_lat > 1.6 | dist_long >1.6) {
+        cliff_time_vect <- c(cliff_time_vect, t*5)
+        break
+      } else {
+        next  # return to while statement?
+      } 
+    } 
+    Average_Time <- ave(cliff_time_vect)
+    print ("Average Cliff Time is", Average_Time)
+  } 
+}
+avg_cliff_time (100,20) # **getting error statement that I don't understand
+
+# another attempt, trying to figure out how to increment a vector outside the
+# function, with 'time', which is inside the function.
+wandering <- function (n) { # n = number of 5-min iterations to test
+  dist_lat <- 0  
+  dist_long <- 0
+  lat_vector <- c() #to set as vector
+  long_vector <- c()
+  t <-0 # to initiate
+  while (t < n) {
+    dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
+    dist_long <- (dist_long + rnorm(1,0))
+    lat_vector <- c(lat_vector, dist_lat) # need 2 difft vars for lat since dist_lat is the new position and lat_vector is the vector
+    long_vector <- c(long_vector, dist_long)
+    t <- t+1
+    if (dist_lat > 1.6 | dist_long >1.6) {
+      cat ("Time to cliff is", t*5, "minutes")
+      time <- (t*5)   # ** not sure how go get this variable outside the function
+      break
+    } 
+  }
 }
 wandering(100)
 
