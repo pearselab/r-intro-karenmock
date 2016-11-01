@@ -271,7 +271,6 @@ avg_cliff_time <- function (n,nsims){ # function to take the avg of nsims reps
 avg_time <- avg_cliff_time(100,20)
 mean(avg_time, na.rm = TRUE)
 
-
 # Q16) Sadly, by the time you have completed your simulations the faculty member has perished. 
 # Professor Savitzky is keen to ensure this will never happen again, and so has suggested each 
 # faculty member be attached, via rubber band, to a pole at the centre of the site whenever 
@@ -280,6 +279,34 @@ mean(avg_time, na.rm = TRUE)
 # addition to the rate of movement you’ve already simulated) each time-step. Simulate this, 
 # and see how strong the rubber band (α) must be to keep the faculty member safe for at least a day.
 
-# I'm pretty sure this faculty member will perish if she spends any more time on this right now.
-# Possibly return to this if the issues on Q15 can be addressed.
+wandering <- function (n, lambda, x) { # n = number of 5-min iterations to test, lambda is strength coeff, x is extra distance moved
+  dist_lat <- 0  
+  dist_long <- 0
+  dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1; this is to initiate loop with something other than 0
+  dist_long <- (dist_long + rnorm(1,0))
+  # I have changed this to a for loop: notice how I don't have to manually update t now
+  for (t in 1:n) {
+    dist_lat <- (dist_lat + rnorm(1,0) + (lambda*x))  
+    dist_long <- (dist_long + rnorm(1,0) + (lambda*x))
+    # I have removed lat_vector and long_vector as you werent using them in any calculations
+    if (dist_lat > 1.6 | dist_long >1.6) {
+      #cat ("Time to cliff is", t*5, "minutes")
+      time <- (t*5)
+      return(time)
+    } 
+  }
+  return(NA)
+}
+avg_cliff_time <- function (n,lambda,x,nsims){ # function to take the avg of nsims reps
+  vect <- numeric(nsims) #pre-allocation
+  for (i in 1:nsims) {
+    vect[i] <- wandering(n,lambda,x)
+  }
+  return (vect)
+}
+avg_time <- avg_cliff_time(100,1,.1,20) 
+mean(avg_time, na.rm = TRUE)
+# at this point, function incorporates lambda and x but have not simulated to see how lamda is optimized.
 
+# followed the directions but not understanding how this relates to attachment at the center of the plot.
+# STOPPED
