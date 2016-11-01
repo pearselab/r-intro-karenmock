@@ -239,29 +239,28 @@ sp_ab(5,.5,5) # 5 sites, .5 prob of presence, lambda of 5 (rate parameter)
 # the faculty member’s starting point is a deadly cliff! He asks if you could run your simulation 
 # to see how long, on average, until the faculty member plummets to their doom.
 # 1mi = 1.61k
-# --- is there a reason you're converting to kilometers? I feel like this conversion is making things a bit more difficult for you than necessary
 
 wandering <- function (n) { # n = number of 5-min iterations to test
   dist_lat <- 0  
   dist_long <- 0
+  lat_vector <- c() #to set as vector
+  long_vector <- c()
+  t <-0 # to initiate
+  while (t < n) {  #this is a problem if it never goes off the cliff within n iterations
     dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
     dist_long <- (dist_long + rnorm(1,0))
+    lat_vector <- c(lat_vector, dist_lat) # need 2 difft vars for lat since dist_lat is the new position and lat_vector is the vector
+    long_vector <- c(long_vector, dist_long)
+    t <- t+1
     print(dist_lat)
     print(dist_long)
-  # I have changed this to a for loop: notice how I don't have to manually update t now
-  for (t in 1:n) {
-    dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
-    dist_long <- (dist_long + rnorm(1,0))
-    # I have removed lat_vector and long_vector as you werent using them in any calculations
     if (dist_lat > 1.6 | dist_long >1.6) {
       #cat ("Time to cliff is", t*5, "minutes")
       time <- (t*5)
       return(time)
+      break
     } 
   }
-  #The faculty member has not wandered off the cliff in the time allotted
-  # - this fixes the error
-  return(NA)
 }
 wandering(100)
 avg_cliff_time <- function (n,nsims){ # function to take the avg of nsims reps

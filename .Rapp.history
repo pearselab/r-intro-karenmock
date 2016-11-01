@@ -1,0 +1,25 @@
+GompFun <- function (a,b,c,d) { # a,b,c = constants, d = # time steps#
+    pop_vector <- numeric(d)#
+    color <- rep("black",d)#
+    for (i in 1:d) {#
+        pop_vector [i] <- a*exp(-b*exp(-c*i))#
+        if (pop_vector[i] > a) {#
+            color[i] <- "blue"  #now the color vector will have a mix of black and blue#
+        }#
+    }#
+    plot(pop_vector ~ seq(d), col = color)#
+}#
+GompFun(280,100,.4,30)
+GompFun <- function (a,b,c,d) { # a,b,c, constants, d = max time#
+  t <- 0#
+  pop_vector <- 0#
+  time_span <- c(1:d)#
+  for (i in time_span) {#
+    t <- c(t,i) # incrementing to make a vector#
+    pop_size <- a*exp(-b*exp(-c*i)) # within-function variable#
+    pop_vector <-  c(pop_vector, pop_size) # incrementing to make a vector#
+  }#
+  plot(t, pop_vector, col = ifelse(pop_vector > a,"blue", #
+  ifelse (pop_vector > b, "red", "black")), type = "p", xlab = "Time", ylab = "Population")#
+}#
+GompFun(280,100,.4,30)
