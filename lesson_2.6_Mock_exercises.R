@@ -244,10 +244,8 @@ sp_ab(5,.5,5) # 5 sites, .5 prob of presence, lambda of 5 (rate parameter)
 wandering <- function (n) { # n = number of 5-min iterations to test
   dist_lat <- 0  
   dist_long <- 0
-    dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
-    dist_long <- (dist_long + rnorm(1,0))
-    print(dist_lat)
-    print(dist_long)
+  dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1; this is to initiate loop with something other than 0
+  dist_long <- (dist_long + rnorm(1,0))
   # I have changed this to a for loop: notice how I don't have to manually update t now
   for (t in 1:n) {
     dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
@@ -263,19 +261,16 @@ wandering <- function (n) { # n = number of 5-min iterations to test
   # - this fixes the error
   return(NA)
 }
-wandering(100)
 avg_cliff_time <- function (n,nsims){ # function to take the avg of nsims reps
   vect <- numeric(nsims) #pre-allocation
   for (i in 1:nsims) {
     vect[i] <- wandering(n)
   }
-  return(vect)
+  return (vect)
 }
-avg_cliff_time(100,20)
-# sporadically returns "Error in vect[i] <- wandering(n) : replacement has length zero"
-# maps back to wandering function, when t>n
+avg_time <- avg_cliff_time(100,20)
+mean(avg_time, na.rm = TRUE)
 
-# try againm rewriting wandering function to wandering2
 
 # Q16) Sadly, by the time you have completed your simulations the faculty member has perished. 
 # Professor Savitzky is keen to ensure this will never happen again, and so has suggested each 
