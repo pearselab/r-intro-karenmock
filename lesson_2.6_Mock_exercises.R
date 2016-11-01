@@ -37,7 +37,7 @@ seq(20, 10, by=-2)
 isprime <- function (x) {
   all_less <- (2:(x-1))  #creates a vector of all numbers less than x down to 2
   mod_test <- (x%%all_less) #creates a vector of modulos, if not prime, one or more will be 0
-  if (0 %in% mod_test == TRUE) {
+  if (0 %in% mod_test == TRUE & x != 2) { # this specifically excludes the case of x = 2
     print ("This is not a prime number.")
   } else {
     print ("This is a prime number.")
@@ -58,15 +58,17 @@ isprime(31)
 # if the number is divisible by five and “Job: NUMBER” if then number is prime, and nothing otherwise.
 list <- 1:20
 for (i in list) {
-  if (i%%5 == 0) {
-    print (paste0("Good: ", i))
-  } else {
-    all_less <- (2:(i-1))  #creates a vector of all numbers less than x down to 2
-    mod_test <- (i%%all_less) #creates a vector of modulos, if not prime, one or more will be 0
-    if (0 %in% mod_test == TRUE) {
-      print (paste0("Job: ", i))
-    } else {
-      print (i) # added to see numbers in neither category
+  if(i%%5 == 0) {
+    print (paste0("Divisible by 5:", i))
+  } else if (i ==2) {
+    print ("Prime: 2", i)
+  } else if (i !=2) {
+      all_less <- (2:(i-1))  #creates a vector of all numbers less than x down to 2
+      mod_test <- (i%%all_less) #creates a vector of modulos, if not prime, one or more will be 0
+      if (0 %in% mod_test == FALSE) {
+        print (paste0("Prime: ", i))
+      } else {
+        print (i) # added to see numbers in neither category
     }
   }
 }
@@ -114,7 +116,7 @@ GompFun(280,100,.4,30)
 # Hint: try putting 3==3 & 2==2 and 3==4 | 2==2 into an if statement and see what you get. 
 # Using this construction may make this simpler.
 # ***did not do this as could not evaluate when the pop was > a
-# ***did not understand the 'hint' in the question
+# ***did not understand the 'hint' in the question, did not know how to test this since the pop is <a with my test parameters
 
 # Q9: Write a function that draws boxes of a specified width and height that look like this 
 # (height 3, width 5):
@@ -160,15 +162,18 @@ txtbox <- function(w,h,t) {
     }
   cat(top) # print top line
   }
-txtbox (8,6,"grr")
-# there are some problems with height that I am not going to bother to fix
+txtbox (8,6,"txt")
+txtbox (10,15, "txt")
+txtbox (5,3,"txt")  # returns error as it should
+txtbox(8,8, "txt")
+# there are some problems with height and centering using other dimensions that I am not going to bother to fix
 
 # Q11: Modify your box function to build boxes of arbitrary text, taking dimensions specified 
 # in terms of dimensions, not the text. For example, box("wdp", 3, 9, "hey") might produce:
 #   wdpwdpwdp
 #   w  hey  w
 #   wdpwdpwdp
-# skipped this one, I'm done with boxes 
+# SKIPPED 
 
 # Q12: In ecology, hurdle models are often used to model the abundance of species found on surveys. They
 # first model the probability that a species will be present at a site (drawn, for example, from a 
@@ -203,7 +208,7 @@ sp_ab(5,.5,5) # 5 sites, .5 prob of presence, lambda of 5 (rate parameter)
 # Write them a function that simulates lots of species (each with their own p and λ) 
 # across n sites. Return the results in a matrix where each species is a column, and 
 # each site a row (this is the standard used for ecology data in R).
-
+# SKIPPED FOR NOW
 
 
 # Q14) Professor Savitzky approaches you with a delicate problem. A member of faculty 
@@ -228,7 +233,7 @@ sp_ab(5,.5,5) # 5 sites, .5 prob of presence, lambda of 5 (rate parameter)
     plot (lat_vector, long_vector, type = "l")
   }
   wandering(100)
-  
+
 # Q15) Professor Savitzky is deeply concerned to realise that the member of faculty was, in fact, 
 # at the top of a steep mountain in the fog. Approximately 5 miles away, in all directions, from 
 # the faculty member’s starting point is a deadly cliff! He asks if you could run your simulation 
@@ -241,12 +246,14 @@ wandering <- function (n) { # n = number of 5-min iterations to test
   lat_vector <- c() #to set as vector
   long_vector <- c()
   t <-0 # to initiate
-  while (t < n) {
+  while (t < n) {  #this is a problem if it never goes off the cliff within n iterations
     dist_lat <- (dist_lat + rnorm(1,0)) # presume 1 km sd; default sd = 1
     dist_long <- (dist_long + rnorm(1,0))
     lat_vector <- c(lat_vector, dist_lat) # need 2 difft vars for lat since dist_lat is the new position and lat_vector is the vector
     long_vector <- c(long_vector, dist_long)
     t <- t+1
+    print(dist_lat)
+    print(dist_long)
     if (dist_lat > 1.6 | dist_long >1.6) {
       #cat ("Time to cliff is", t*5, "minutes")
       time <- (t*5)
@@ -255,6 +262,7 @@ wandering <- function (n) { # n = number of 5-min iterations to test
     } 
   }
 }
+wandering(100)
 avg_cliff_time <- function (n,nsims){ # function to take the avg of nsims reps
   vect <- numeric(nsims) #pre-allocation
   for (i in 1:nsims) {
@@ -264,8 +272,9 @@ avg_cliff_time <- function (n,nsims){ # function to take the avg of nsims reps
 }
 avg_cliff_time(100,20)
 # sporadically returns "Error in vect[i] <- wandering(n) : replacement has length zero"
+# maps back to wandering function, when t>n
 
-
+# try againm rewriting wandering function to wandering2
 
 # Q16) Sadly, by the time you have completed your simulations the faculty member has perished. 
 # Professor Savitzky is keen to ensure this will never happen again, and so has suggested each 
